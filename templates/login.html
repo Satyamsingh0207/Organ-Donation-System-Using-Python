@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .jumbotron {
+            text-align: center;
+            padding: 2rem;
+            background-color: #007bff;
+            color: #ffffff;
+            border-radius: 10px;
+        }
+
+        .login-form {
+            margin-top: 20px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .input-field label {
+            color: #007bff;
+        }
+
+        .input-field input:focus {
+            border-bottom: 1px solid #007bff;
+            box-shadow: 0 1px 0 0 #007bff;
+        }
+
+        .login-btn {
+            background-color: #007bff;
+        }
+:root {
+  /* 
+    One-stop magic hue shift
+    We're using oklch(), so these might not be the hue values you are familiar with 
+  See: https://oklch.com/
+  */
+  --hue: 310; /* change me (0-360) */
+  --hue-adjust: 135; /* and me */
+
+  --hue-2: calc(var(--hue) + var(--hue-adjust));
+
+  --page-background: oklch(10% 0.0666 var(--hue));
+}
+
+button {
+  --button-background: oklch(20% 0.0666 var(--hue));
+  --text-base: oklch(45% 0.175 var(--hue));
+  --text-hover: oklch(95% 0.145 calc(var(--hue) + 30));
+
+  --shadow-start: oklch(95% 0.145 var(--hue-2));
+  --shadow-end: oklch(60% 0.29 var(--hue));
+
+  /* No color function, so we can use different opacity values */
+  --shadow-inner: 60% 0.29 var(--hue);
+
+  all: unset;
+
+  /* Text */
+  color: var(--text-base);
+  font: 700 1.125rem/1.2 Raleway, sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: center;
+
+  /* Button sizing */
+  padding: 0.85em;
+  max-width: 100%;
+  width: 12em;
+
+  /* Button styling */
+  background-color: var(--button-background);
+  background-clip: padding-box;
+  border: 5px solid var(--text-base);
+  border-radius: 2em;
+  cursor: pointer;
+
+  /* Effects */
+  position: relative;
+  transition: 0.25s ease-out;
+
+  /* Set up pseudo elements */
+  &::before,
+  &::after {
+    content: "";
+    border-radius: inherit;
+    transition: inherit;
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  /* Gradient shadow */
+  &::before {
+    /* Position */
+    inset: -0.2em;
+    z-index: -1;
+
+    /* Effect */
+    background: linear-gradient(var(--shadow-start), var(--shadow-end));
+    filter: blur(1.2em) saturate(1.2);
+
+    /* Animation */
+    transform-origin: bottom;
+    transform: scaleY(0.5);
+    opacity: 0;
+  }
+
+  /* Semi-transparent blended box-shadow brightens up the border */
+  &::after {
+    /* Effect */
+    box-shadow: inset 0 0 0 1px #fff, /* inner pixel */
+      0 0 0 4px hsla(0deg, 0%, 100%, 0.5), /* lightened border */
+      1px 1px 0 4px #fff; /* outer pixel */
+    mix-blend-mode: overlay;
+
+    /* Animation */
+    opacity: 0;
+  }
+
+  &:hover,
+  &:focus {
+    color: var(--text-hover);
+
+    /*  Lighten border */
+    border-color: transparent;
+
+    /* Inner shadow */
+    box-shadow:
+      inset 0 1.4em 0 oklch(var(--shadow-inner) / 0.1), /* gloss */
+      inset 0 0 1.4em oklch(var(--shadow-inner) / 0.32), /* inner glow */
+      0 1px 1px oklch(var(--shadow-inner) / 0.32); /* bottom line */
+
+    /* Show effects */
+    &::before,
+    &::after {
+      transform: none;
+      opacity: 1;
+    }
+  }
+}
+    </style>
+</head>
+
+<body>
+
+    <div class="jumbotron">
+        <h1 class="display-4">Organ Donation System</h1>
+<p class="lead text-center">Make a difference. Save lives through organ donation</p>
+    </div>
+
+   <form class="container login-form" action="/login" method="POST" onsubmit="return validateForm()">
+        <div class="input-field">
+            <label for="inputUsername">Username</label>
+            <input name="username" type="text" class="form-control" id="inputUsername" placeholder="Enter username" required>
+        </div>
+        <div class="input-field">
+            <label for="inputPassword">Password</label>
+            <input name="password" type="password" class="form-control" id="inputPassword" placeholder="Password" required>
+        </div>
+
+      {% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <div id="errorMessage" style="color: red; margin-top: 10px;">
+      {% for message in messages %}
+        {{ message }}<br>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
+        <button type="submit" class="btn waves-effect waves-light login-btn">Submit</button>
+    </form>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <script>
+        function validateForm() {
+            var username = document.getElementById('inputUsername').value;
+            var password = document.getElementById('inputPassword').value;
+
+            if (username === '' || password === '') {
+                alert('Both username and password are required.');
+                return false; // prevent form submission
+            }
+
+            // Additional validation logic can be added here if needed
+
+            return true; // allow form submission
+        }
+    </script>
+</body>
+
+
+</html>

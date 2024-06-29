@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <style>
+        body {
+            background-color: #e9f1ff; /* Light blue background */
+            font-family: 'Arial', sans-serif;
+        }
+
+        .jumbotron {
+            background-color: #007bff; /* Primary blue color */
+            color: #fff;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar {
+            background-color: #007bff; /* Primary blue color */
+            padding: 10px;
+        }
+
+        .navbar a {
+            color: #fff;
+        }
+
+       
+
+        img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+        }
+:root {
+  /* 
+    One-stop magic hue shift
+    We're using oklch(), so these might not be the hue values you are familiar with 
+  See: https://oklch.com/
+  */
+  --hue: 310; /* change me (0-360) */
+  --hue-adjust: 135; /* and me */
+
+  --hue-2: calc(var(--hue) + var(--hue-adjust));
+
+  --page-background: oklch(10% 0.0666 var(--hue));
+}
+
+button {
+  --button-background: oklch(20% 0.0666 var(--hue));
+  --text-base: oklch(45% 0.175 var(--hue));
+  --text-hover: oklch(95% 0.145 calc(var(--hue) + 30));
+
+  --shadow-start: oklch(95% 0.145 var(--hue-2));
+  --shadow-end: oklch(60% 0.29 var(--hue));
+
+  /* No color function, so we can use different opacity values */
+  --shadow-inner: 60% 0.29 var(--hue);
+
+  all: unset;
+
+  /* Text */
+  color: var(--text-base);
+  font: 700 1.125rem/1.2 Raleway, sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: center;
+
+  /* Button sizing */
+  padding: 0.85em;
+  max-width: 100%;
+  width: 12em;
+
+  /* Button styling */
+  background-color: var(--button-background);
+  background-clip: padding-box;
+  border: 5px solid var(--text-base);
+  border-radius: 2em;
+  cursor: pointer;
+
+  /* Effects */
+  position: relative;
+  transition: 0.25s ease-out;
+
+  /* Set up pseudo elements */
+  &::before,
+  &::after {
+    content: "";
+    border-radius: inherit;
+    transition: inherit;
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  /* Gradient shadow */
+  &::before {
+    /* Position */
+    inset: -0.2em;
+    z-index: -1;
+
+    /* Effect */
+    background: linear-gradient(var(--shadow-start), var(--shadow-end));
+    filter: blur(1.2em) saturate(1.2);
+
+    /* Animation */
+    transform-origin: bottom;
+    transform: scaleY(0.5);
+    opacity: 0;
+  }
+
+  /* Semi-transparent blended box-shadow brightens up the border */
+  &::after {
+    /* Effect */
+    box-shadow: inset 0 0 0 1px #fff, /* inner pixel */
+      0 0 0 4px hsla(0deg, 0%, 100%, 0.5), /* lightened border */
+      1px 1px 0 4px #fff; /* outer pixel */
+    mix-blend-mode: overlay;
+
+    /* Animation */
+    opacity: 0;
+  }
+
+  &:hover,
+  &:focus {
+    color: var(--text-hover);
+
+    /*  Lighten border */
+    border-color: transparent;
+
+    /* Inner shadow */
+    box-shadow:
+      inset 0 1.4em 0 oklch(var(--shadow-inner) / 0.1), /* gloss */
+      inset 0 0 1.4em oklch(var(--shadow-inner) / 0.32), /* inner glow */
+      0 1px 1px oklch(var(--shadow-inner) / 0.32); /* bottom line */
+
+    /* Show effects */
+    &::before,
+    &::after {
+      transform: none;
+      opacity: 1;
+    }
+  }
+}
+    </style>
+
+    <title>Statistics</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-dark bg-dark justify-content-between">
+        <form action="/home">
+            <button style="border: 0px solid transparent;" class="btn btn-outline-primary">HOME</button>
+        </form>
+        <form class="form-inline" action="/logout">
+            <label style="color:white; padding-right: 10px">Hi {{session.get('username')}}!</label>
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Logout</button>
+        </form>
+    </nav>
+    <div class="jumbotron">
+        <center>
+            <h1 class="display-4">Statistics</h1>
+        </center>
+    </div>
+    <center>
+        <img src="{{url_for('static', filename='donor_stat.png')}}">
+    </center>
+    <center>
+        <img src="{{url_for('static', filename='Patient_stat.jpeg')}}">
+    </center>
+    <center>
+        <img src="{{url_for('static', filename='success.jpeg')}}">
+    </center>
+</body>
+
+</html>

@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <style>
+        body {
+            background-color: #e6f4f9; /* Light blue background */
+            font-family: 'Arial', sans-serif;
+        }
+
+        .jumbotron {
+            background-color: #007bff; /* Primary blue color */
+            color: #fff;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar {
+            background-color: #007bff; /* Primary blue color */
+            padding: 10px;
+        }
+
+        .navbar a {
+            color: #fff;
+        }
+
+
+:root {
+  /* 
+    One-stop magic hue shift
+    We're using oklch(), so these might not be the hue values you are familiar with 
+  See: https://oklch.com/
+  */
+  --hue: 310; /* change me (0-360) */
+  --hue-adjust: 135; /* and me */
+
+  --hue-2: calc(var(--hue) + var(--hue-adjust));
+
+  --page-background: oklch(10% 0.0666 var(--hue));
+}
+
+button {
+  --button-background: oklch(20% 0.0666 var(--hue));
+  --text-base: oklch(45% 0.175 var(--hue));
+  --text-hover: oklch(95% 0.145 calc(var(--hue) + 30));
+
+  --shadow-start: oklch(95% 0.145 var(--hue-2));
+  --shadow-end: oklch(60% 0.29 var(--hue));
+
+  /* No color function, so we can use different opacity values */
+  --shadow-inner: 60% 0.29 var(--hue);
+
+  all: unset;
+
+  /* Text */
+  color: var(--text-base);
+  font: 700 1.125rem/1.2 Raleway, sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: center;
+
+  /* Button sizing */
+  padding: 0.85em;
+  max-width: 100%;
+  width: 12em;
+
+  /* Button styling */
+  background-color: var(--button-background);
+  background-clip: padding-box;
+  border: 5px solid var(--text-base);
+  border-radius: 2em;
+  cursor: pointer;
+
+  /* Effects */
+  position: relative;
+  transition: 0.25s ease-out;
+
+  /* Set up pseudo elements */
+  &::before,
+  &::after {
+    content: "";
+    border-radius: inherit;
+    transition: inherit;
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  /* Gradient shadow */
+  &::before {
+    /* Position */
+    inset: -0.2em;
+    z-index: -1;
+
+    /* Effect */
+    background: linear-gradient(var(--shadow-start), var(--shadow-end));
+    filter: blur(1.2em) saturate(1.2);
+
+    /* Animation */
+    transform-origin: bottom;
+    transform: scaleY(0.5);
+    opacity: 0;
+  }
+
+  /* Semi-transparent blended box-shadow brightens up the border */
+  &::after {
+    /* Effect */
+    box-shadow: inset 0 0 0 1px #fff, /* inner pixel */
+      0 0 0 4px hsla(0deg, 0%, 100%, 0.5), /* lightened border */
+      1px 1px 0 4px #fff; /* outer pixel */
+    mix-blend-mode: overlay;
+
+    /* Animation */
+    opacity: 0;
+  }
+
+  &:hover,
+  &:focus {
+    color: var(--text-hover);
+
+    /*  Lighten border */
+    border-color: transparent;
+
+    /* Inner shadow */
+    box-shadow:
+      inset 0 1.4em 0 oklch(var(--shadow-inner) / 0.1), /* gloss */
+      inset 0 0 1.4em oklch(var(--shadow-inner) / 0.32), /* inner glow */
+      0 1px 1px oklch(var(--shadow-inner) / 0.32); /* bottom line */
+
+    /* Show effects */
+    &::before,
+    &::after {
+      transform: none;
+      opacity: 1;
+    }
+  }
+}
+
+    </style>
+
+    <title>Details</title>
+ <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Function to validate the form
+            function validateForm() {
+                var fields = ['User_ID', 'Name', 'Date_of_Birth', 'Medical_insurance', 'Medical_history', 'Street', 'City', 'State',];
+
+                for (var i = 0; i < fields.length; i++) {
+                    var input = document.getElementsByName(fields[i])[0].value;
+
+                    // Check if the field is empty
+                    if (input.trim() === '') {
+                        alert('Please fill in all fields.');
+                        return false; // Prevent form submission
+                    }
+                }
+
+                return true; // Allow form submission
+            }
+
+            // Add event listener to the form submission
+            var form = document.querySelector('form[action="{{"/add_%s" % id}}"]');
+            form.addEventListener('submit', function (event) {
+                if (!validateForm()) {
+                    event.preventDefault(); // Prevent form submission if validation fails
+                }
+            });
+        });
+    </script>
+</head>
+
+<!-- Head section remains unchanged -->
+
+<body>
+    <nav class="navbar navbar-dark bg-dark justify-content-between">
+        <form action="/home">
+            <button class="btn btn-outline-primary">HOME</button>
+        </form>
+        <form class="form-inline" action="/logout">
+            <label class="text-white pr-2">Hi {{session.get('username')}}!</label>
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Logout</button>
+        </form>
+    </nav>
+    <div class="jumbotron">
+        <div class="container">
+            <h1 class="display-4 text-center">Organ Donation System</h1>
+        </div>
+    </div>
+
+    {% if error == 'True' %}
+    <div class="alert alert-danger text-center" role="alert">
+        Please Enter Valid Data
+    </div>
+    {% endif %}
+
+    {% if success == 'True' %}
+    <div class="alert alert-success text-center" role="alert">
+        Successfully Added {{id.capitalize()}}
+    </div>
+    {% endif %}
+
+    <div class="container">
+        <form action="{{'/add_%s' % id}}" method="POST" onsubmit="return validateForm()">
+            <table class="table table-striped table-sm">
+                {% for i in range(0, fields | length) %}
+                <tr>
+                    <th scope="row">{{ fields[i] }}</th>
+                    <td>
+                        {% if fields[i] == 'Date_of_Birth' %}
+                            <input class="form-control" type="date" name="{{ fields[i] }}" aria-label="{{ fields[i] }} input">
+
+{% elif fields[i] == 'Date_of_joining' %}
+<input class="form-control" type="date" name="{{ fields[i] }}" aria-label="{{ fields[i] }} input">
+{% elif fields[i] == 'Date_of_transplant' %}
+<input class="form-control" type="date" name="{{ fields[i] }}" aria-label="{{ fields[i] }} input">
+
+                        {% elif fields[i] == 'Name' %}
+                            <input class="form-control" type="text" name="{{ fields[i] }}" aria-label="{{ fields[i] }} input" pattern="^[^\d]+$" title="Name should not contain numbers">
+                        {% elif fields[i] == 'User_ID' %}
+                            <input class="form-control" type="number" name="{{ fields[i] }}" aria-label="{{ fields[i] }} input">
+{% elif fields[i] == 'Name' or fields[i] == 'Organization_ID' %}
+                            <input class="form-control" type="number" name="{{ fields[i] }}" aria-label="{{ fields[i] }} input" required>
+{% elif fields[i] == 'Name' or fields[i] == 'Patient_ID' %}
+                            <input class="form-control" type="number" name="{{ fields[i] }}" aria-label="{{ fields[i] }} input" required>
+
+{% elif fields[i] == 'Name' or fields[i] == 'Donor_ID' %}
+                            <input class="form-control" type="number" name="{{ fields[i] }}" aria-label="{{ fields[i] }} input" required>
+{% elif fields[i] == 'Name' or fields[i] == 'Phone_no' %}
+                            <input class="form-control" type="number" name="{{ fields[i] }}" aria-label="{{ fields[i] }} input" required>
+
+{% elif fields[i] == 'Name' or fields[i] == 'Doctor_ID' %}
+                            <input class="form-control" type="number" name="{{ fields[i] }}" aria-label="{{ fields[i] }} input" required>
+{% elif fields[i] == 'Name' or fields[i] == 'Employee_ID' %}
+                            <input class="form-control" type="number" name="{{ fields[i] }}" aria-label="{{ fields[i] }} input" required>
+{% elif fields[i] == 'Name' or fields[i] == 'Organ_ID' %}
+                            <input class="form-control" type="number" name="{{ fields[i] }}" aria-label="{{ fields[i] }} input" required>
+
+{% elif fields[i] == 'Term_length' %}
+        <div class="input-group">
+            <input class="form-control" type="number" name="{{ fields[i] }}" aria-label="{{ fields[i] }} input" required>
+            <div class="input-group-append">
+                <span class="input-group-text">years</span>
+            </div>
+        </div>
+
+
+
+{% elif fields[i] == 'Organization_name' %}
+                            <input class="form-control" type="text" name="{{ fields[i] }}" aria-label="{{ fields[i] }} input" pattern="^[^\d]+$" title="Name should not contain numbers" required>
+
+{% elif fields[i] == 'Doctor_Name' %}
+                            <input class="form-control" type="text" name="{{ fields[i] }}" aria-label="{{ fields[i] }} input" pattern="^[^\d]+$" title="Name should not contain numbers" required>
+
+{% elif fields[i] == 'Department_Name' %}
+                            <input class="form-control" type="text" name="{{ fields[i] }}" aria-label="{{ fields[i] }} input" pattern="^[^\d]+$" title="Name should not contain numbers" required>
+
+
+
+                        {% elif fields[i] == 'Government_approved' %}
+                            <select class="form-control" name="{{ fields[i] }}" aria-label="{{ fields[i] }} input" required>
+                                <option value="No">No</option>
+                                <option value="Yes">Yes</option>
+                            </select>
+
+                        {% elif fields[i] == 'Status' %}
+                            <select class="form-control" name="{{ fields[i] }}" aria-label="{{ fields[i] }} input" required>
+                                <option value="0">Successful</option>
+                                <option value="1">Not Successful</option>
+                            </select>
+
+                        {% elif fields[i] == 'Medical_insurance' %}
+                            <select class="form-control" name="{{ fields[i] }}" aria-label="{{ fields[i] }} input" required>
+                                <option value="0">No</option>
+                                <option value="1">Yes</option>
+                            </select>
+
+                        {% elif fields[i] == 'Medical_history' %}
+                            <select class="form-control" name="{{ fields[i] }}" aria-label="{{ fields[i] }} input" required>
+                                <option value="No">No</option>
+                                <option value="Yes">Yes</option>
+                            </select>
+
+                         {% elif fields[i] == 'organ_req' %}
+                            <select class="form-control" name="{{ fields[i] }}" aria-label="{{ fields[i] }} input" required>
+ < <option value="" selected disabled>Select organ to receive</option>
+
+                                <option value="Kidney">Kidney</option>
+                                <option value="Lung">Lung</option>
+                                <option value="Eyes">Eyes</option>
+                                <option value="Heart">Heart</option>
+                                <option value="Intestine">Intestine</option>
+                                <option value="Pancreas">Pancreas</option>
+
+                            </select>
+                          {% elif fields[i] == 'organ_donated' %}
+                            <select class="form-control" name="{{ fields[i] }}" aria-label="{{ fields[i] }} input" required>
+                                
+                                < <option value="" selected disabled>Select organ to donate</option>
+            <option value="Kidney">Kidney</option>
+            <option value="Lung">Lung</option>
+            <option value="Eyes">Eyes</option>
+            <option value="Heart">Heart</option>
+            <option value="Intestine">Intestine</option>
+            <option value="Pancreas">Pancreas</option>
+        </select>
+                            
+
+
+
+
+                        {% else %}
+                            <input class="form-control" type="text" name="{{ fields[i] }}" aria-label="{{ fields[i] }} input" required>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+            <div class="text-center">
+                <button class="btn btn-success btn-lg" type="submit">Add</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
+

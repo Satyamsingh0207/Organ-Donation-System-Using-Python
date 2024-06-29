@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Details</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+  <style>
+    body {
+      background-color: #e6f4f9;
+      font-family: 'Arial', sans-serif;
+    }
+
+    .jumbotron {
+      background-color: #007bff;
+      color: #fff;
+      padding: 20px;
+      margin-bottom: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar {
+      background-color: #007bff;
+      padding: 10px;
+    }
+
+    .navbar a {
+      color: #fff;
+    }
+
+    .container {
+      margin-top: 30px;
+    }
+
+    .btn-submit {
+      background-color: #28a745;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+
+ <nav class="navbar navbar-dark bg-dark justify-content-between">
+      <form action="/home">
+          <button class="btn btn-outline-primary">HOME</button>
+      </form>
+      <form class="form-inline" action="/logout">
+          <label class="text-white pr-2">Hi {{session.get('username')}}!</label>
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Logout</button>
+      </form>
+  </nav>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1 class="display-4 text-center">Organ Donation System</h1>
+  </div>
+</div>
+
+<div class="container">
+  <form action="/add user" method="POST" onsubmit="validateForm(event)">
+    <table class="table table-striped table-sm">
+      <tr>
+        <td><label for="userId">User ID:</label></td>
+        <td><input type="text" class="form-control" id="userId" name="userId" required></td>
+      </tr>
+      <tr>
+        <td><label for="name">Name:</label></td>
+        <td><input type="text" class="form-control" id="name" name="name" required></td>
+      </tr>
+      <tr>
+        <td><label for="dob">Date of Birth:</label></td>
+        <td><input type="date" class="form-control" id="dob" name="dob" required></td>
+      </tr>
+      <tr>
+        <td><label for="insurance">Medical Insurance:</label></td>
+        <td><input type="text" class="form-control" id="insurance" name="insurance" required></td>
+      </tr>
+      <tr>
+        <td><label for="history">Medical History:</label></td>
+        <td><textarea class="form-control" id="history" name="history" rows="4" required></textarea></td>
+      </tr>
+      <tr>
+        <td><label for="street">Street:</label></td>
+        <td><input type="text" class="form-control" id="street" name="street" required></td>
+      </tr>
+      <tr>
+        <td><label for="city">City:</label></td>
+        <td><input type="text" class="form-control" id="city" name="city" required></td>
+      </tr>
+      <tr>
+        <td><label for="state">State:</label></td>
+        <td><input type="text" class="form-control" id="state" name="state" required></td>
+      </tr>
+    </table>
+    <div class="text-center">
+      <button class="btn btn-submit btn-lg" type="submit">Add</button>
+    </div>
+  </form>
+</div>
+
+<script>
+  function validateForm(event) {
+    event.preventDefault();
+
+    // Validation logic
+    const userId = document.getElementById('userId').value;
+    const name = document.getElementById('name').value;
+    const dob = document.getElementById('dob').value;
+    const insurance = document.getElementById('insurance').value;
+    const history = document.getElementById('history').value;
+    const street = document.getElementById('street').value;
+    const city = document.getElementById('city').value;
+    const state = document.getElementById('state').value;
+
+    // Validation for User ID as integer
+    if (!/^\d+$/.test(userId)) {
+      alert('User ID should be a valid integer.');
+      return;
+    }
+
+    if (!userId || !name || !dob || !insurance || !history || !street || !city || !state) {
+      alert('All fields are required.');
+      return;
+    }
+
+    // If all validations pass, you can submit the form or perform additional actions.
+    alert('Form submitted successfully!');
+    document.getElementById('userForm').reset();
+  }
+</script>
+
+</body>
+</html>
